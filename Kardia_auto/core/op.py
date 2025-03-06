@@ -15,7 +15,12 @@ def capture_screenshot():
 def capture_screenshot_func():
     screenshot = pg.screenshot()
     save_path = fpth("screenshot")
-    screenshot.save(save_path)
+    try :
+        screenshot.save(save_path)
+    except PermissionError as e:
+        print(e)
+    except Exception as e :
+        print(e)
     return 1
 
 
@@ -26,7 +31,7 @@ def fpth(name):
         makedirs(path.dirname(tarpath))
     return tarpath
 
-def find_img(tarpath, threshold=0.7,single_find=True):
+def find_img(tarpath, threshold=0.8,single_find=True):
     #time_start = time.time()
     scr_shot_path = fpth("screenshot")
     if not path.exists(scr_shot_path):

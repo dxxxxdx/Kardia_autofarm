@@ -12,15 +12,12 @@ def sub_enter():
     label1 = tk.Label(root,text="已经检测到你的农场\n\n",font=("", 24))
     label1.pack()
     def jump_to_egg_process():
-        time.sleep(0.3)
         root.after(50, root.destroy)
         ep.egg_process()
     def jump_to_main_enter():
-        time.sleep(0.3)
         root.after(50, root.destroy)
         core.main_enter.main_enter()
     def jump_to_fight_gui():
-        time.sleep(0.3)
         root.after(50, root.destroy)
         core.fight_enter.fight_enter()
     b1 = tk.Button(root,text="自动孵蛋",command=jump_to_egg_process,padx=25,pady=25)

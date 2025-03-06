@@ -11,15 +11,6 @@ import threading as th
 global_queue = [mp.Queue(),mp.Queue()]
 
 
-def get_global_queue():
-    global global_queue
-    return global_queue
-
-def set_global_queue(queuex):
-    global global_queue
-    global_queue = queuex
-    return global_queue
-
 
 def recongnize_process( ):
     img_input = mp.Queue()
@@ -29,7 +20,6 @@ def recongnize_process( ):
     global_queue = (img_input, img_output)
     p.start()
     return img_input, img_output
-
 
 
 def recongnize_func(img_input,img_output):
@@ -45,6 +35,10 @@ def recongnize_func(img_input,img_output):
         if img_op is not None and img_op.name != "":
             path = op.fpth(img_op.name)
             print("尝试寻找"+img_op.name)
+
+        elif img_op.name == "update":
+            op.capture_screenshot_func()
+            continue
         else:
             continue
 
@@ -53,10 +47,12 @@ def recongnize_func(img_input,img_output):
         if center is None:
             img_output.put(ImgResult(img_op.name,-1,img_op.uuid))
             continue
-        while center == [] and img_op.try_times != 0:
+        while center == [] and img_op.try_times > 1:
             center = op.find_img(path, single_find=img_op.single_find)
+            print(f"find retry:{img_op.try_times}")
             img_op.try_times -= 1
-
+            time.sleep(0.03)
+            op.capture_screenshot_func()
 
 
         success = False
