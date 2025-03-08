@@ -1,7 +1,10 @@
 
 import queue as queue
 
+#常用的gui工具
+
 def label_updater(root,label,queuex):
+    #更新标签内容
     text = ""
     if not root.winfo_exists():
         return
@@ -15,7 +18,8 @@ def label_updater(root,label,queuex):
         pass
     root.after(50,label_updater,root,label,queuex)
 
-def test_th(root,th,end_func): #th销毁后关闭窗口
+def test_th(root,th,end_func):
+    #th销毁后关闭窗口
     if not root.winfo_exists():
         return
     if not th.is_alive() :
@@ -29,6 +33,7 @@ import tkinter as tk
 
 
 def show_message(text,join= False):
+    #发弹窗，join表示是否阻塞进程
     def show_message_gui():
         root = tk.Tk()
         screen_width = root.winfo_screenwidth()

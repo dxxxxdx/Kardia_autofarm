@@ -4,6 +4,9 @@ import cv2
 import time
 from os import path, makedirs
 
+#operation 仅在此处使用opencv，并且做了一些函数便于调用
+
+
 def capture_screenshot():
     while True:
         screenshot = pg.screenshot()
@@ -17,6 +20,7 @@ def capture_screenshot_func():
     save_path = fpth("screenshot")
     try :
         screenshot.save(save_path)
+#偶尔会因为运行时间长报错
     except PermissionError as e:
         print(e)
     except Exception as e :
@@ -24,14 +28,16 @@ def capture_screenshot_func():
     return 1
 
 
-def fpth(name):
+def fpth(name,filetype= ".png"):
+    #找路径常用
     base_path = path.dirname(path.abspath(__file__))
-    tarpath = path.join(base_path, "lib", name + ".png")
+    tarpath = path.join(base_path, "lib", name , filetype)
     if not path.exists(path.dirname(tarpath)):
         makedirs(path.dirname(tarpath))
     return tarpath
 
 def find_img(tarpath, threshold=0.8,single_find=True):
+    #图像识别函数，返回坐标
     #time_start = time.time()
     scr_shot_path = fpth("screenshot")
     if not path.exists(scr_shot_path):

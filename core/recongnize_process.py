@@ -10,9 +10,10 @@ import threading as th
 
 global_queue = [mp.Queue(),mp.Queue()]
 
-
+#出于性能考虑，开一个单独进程进行图像识别
 
 def recongnize_process( ):
+    #初始化
     img_input = mp.Queue()
     img_output = mp.Queue()
     p = mp.Process(target=recongnize_func,name="recongnize",args=(img_input,img_output,))
@@ -23,6 +24,9 @@ def recongnize_process( ):
 
 
 def recongnize_func(img_input,img_output):
+
+    #进程内部
+
     while img_input is not None:
         time.sleep(0.01)
         print("有"+ str(img_input.qsize())+"任务排队")
@@ -37,11 +41,11 @@ def recongnize_func(img_input,img_output):
             print("尝试寻找"+img_op.name)
 
         elif img_op.name == "update":
+            #update作为特殊参数传入后会尝试更新截图
             op.capture_screenshot_func()
             continue
         else:
             continue
-
 
         center = op.find_img(path,single_find=img_op.single_find)
         if center is None:
@@ -57,6 +61,9 @@ def recongnize_func(img_input,img_output):
 
         success = False
         while not success:
+
+            #几种操作，点击，移动，寻找
+
             if img_op.operation == "c" :
                 i = 0
                 for tar_area in center:
@@ -96,6 +103,7 @@ def get_recongnize_process():
 
 
 class ImgOperation :
+    #识别类，将目标打包送给识别进程
     def __init__(self, name, operation, single_find=True, try_times=1, multi_click=1):
         self.name = name
         self.operation = operation
@@ -113,6 +121,7 @@ class ImgOperation :
 
 
 class ImgResult :
+    #识别结果
     def __init__(self, name , times, uuidx):
         self.name = name
         self.times : int =  times
@@ -123,6 +132,9 @@ class ImgResult :
 
 
 def operate (name,operation,single_find=True,try_times =1,multi_click=1):
+
+    #最常用的识别，任务多时可能会被阻塞
+
     starttime = time.time()
     img = ImgOperation(name,operation,single_find,try_times,multi_click)
     uuidx = img.uuid
@@ -131,7 +143,6 @@ def operate (name,operation,single_find=True,try_times =1,multi_click=1):
     img_input.put(img)
     res = ImgResult
     while True:
-
         try :
             res = img_output.get()
             if res.uuid !=  uuidx :
@@ -152,6 +163,9 @@ def operate (name,operation,single_find=True,try_times =1,multi_click=1):
 
 
 def wait_for(root,tarimg,end_func):
+
+    #窗口调用后，不断识别是否有目标，识别到会执行endfunc
+
     t = th.Thread(target=wait_for_thread,args=(root,tarimg,end_func))
     t.start()
     return t
@@ -175,6 +189,7 @@ def wait_for_thread(root,tarimg,end_func):
 
 
 def close_all_process():
+    #清理进程，准备关闭
     print("即将关闭")
     for p in mp.active_children():
         p.terminate()
