@@ -1,14 +1,12 @@
 import core.recongnize_process as rp
-import core.main_enter
+import stages.main_enter
 
 #基于opencv的图像识别，需要下载电脑模拟器并且将其置于屏幕才可以使用
-#tttt
 
 def main():
     rp.recongnize_process()
-    core.main_enter.main_enter()
+    stages.main_enter.main_enter()
 
 
-    a = 1
 if __name__ == "__main__":
     main()

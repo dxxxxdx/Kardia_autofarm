@@ -1,8 +1,7 @@
-import time
 import tkinter as tk
-import core.main_enter
-import core.egg_process as ep
-import core.fight_enter
+import stages.main_enter
+import stages.egg_process as ep
+import stages.fight_enter
 
 def sub_enter():
     root = tk.Tk()
@@ -16,10 +15,10 @@ def sub_enter():
         ep.egg_process()
     def jump_to_main_enter():
         root.after(50, root.destroy)
-        core.main_enter.main_enter()
+        stages.main_enter.main_enter()
     def jump_to_fight_gui():
         root.after(50, root.destroy)
-        core.fight_enter.fight_enter()
+        stages.fight_enter.fight_enter()
     b1 = tk.Button(root,text="自动孵蛋",command=jump_to_egg_process,padx=25,pady=25)
     b1.pack()
     b2 = tk.Button(root,text="自动打架",command=jump_to_fight_gui,padx=25,pady=25)

@@ -4,13 +4,11 @@ import tkinter as tk
 from tkinter import ttk
 import pyautogui as pya
 from numpy.random import random_integers
-from pyautogui import scroll
 
-import core.fight_enter
 import threading as th
 import core.recongnize_process as rp
 import core.gui_tools as gt
-import core.main_enter
+import stages.main_enter
 import queue
 import core.often_operate
 
@@ -72,7 +70,7 @@ def mine_process():
 
     def back():
         root.destroy()
-        core.main_enter.main_enter()
+        stages.main_enter.main_enter()
 
     def set_gem_type(event):
         nonlocal gem_type

@@ -1,17 +1,17 @@
 import time
 import tkinter as tk
-import core.fight_enter
+import stages.fight_enter
 import threading as th
 import core.recongnize_process as rp
 import core.gui_tools as gt
-import core.main_enter
+import stages.main_enter
 import queue
 import core.often_operate
 
 def fight_process(target_map):
     root = tk.Tk()
     root.attributes("-topmost", True)
-    label1 = tk.Label(root, text=f"自动战斗系统\n\n{core.fight_enter.fight_dic_inv.get(target_map)}\n", font=("", 24))
+    label1 = tk.Label(root, text=f"自动战斗系统\n\n{stages.fight_enter.fight_dic_inv.get(target_map)}\n", font=("", 24))
     label0 = tk.Label(root, text="请把页面挂在副本入口\n当前状态：", font=("", 18))
     labelx = tk.Label(root, text='初始化ing', fg="blue", font=("", 24))
     bread = [0]
@@ -30,7 +30,7 @@ def fight_process(target_map):
 
     def back():
         root.destroy()
-        core.main_enter.main_enter()
+        stages.main_enter.main_enter()
 
     button = tk.Button(root, text="开始刷副本", font=("", 18), command=lambda: start())
     button2 = tk.Button(root, text="当前未使用面包续航", font=("", 18), command=lambda: set_with_bread(button2))

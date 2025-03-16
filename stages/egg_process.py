@@ -5,7 +5,7 @@ import tkinter as tk
 import queue
 import core.gui_tools as gt
 import keyboard
-import core.main_enter
+import stages.main_enter
 
 def egg_process():
     root = tk.Tk()
@@ -26,7 +26,7 @@ def egg_process():
         eggt.start()
     def back():
         root.destroy()
-        core.main_enter.main_enter()
+        stages.main_enter.main_enter()
     root.after(100,start)
     root.after(100, lambda:gt.label_updater(root,labelx,egg_queue))
     root.after(100, lambda: gt.test_th(root, eggt,back))

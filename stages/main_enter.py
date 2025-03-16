@@ -1,8 +1,8 @@
 
 import tkinter as tk
-import core.op
 import core.recongnize_process as rp
-import core.sub_enter
+import stages.sub_enter
+from core.op import fpth
 
 def main_enter():
 
@@ -20,7 +20,7 @@ def main_enter():
         rp.close_all_process()
     def jump_to_sub_enter():
         root.destroy()
-        core.sub_enter.sub_enter()
+        stages.sub_enter.sub_enter()
     def jump_to_fight_enter():
         root.destroy()
 

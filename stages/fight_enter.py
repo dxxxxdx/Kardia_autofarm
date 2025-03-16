@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-import core.mine_process
-import core.sub_enter
-import core.fight_process
+import stages.mine_process
+import stages.sub_enter
+import stages.fight_process
 fight_dic = {
     "普通本完全":"normal3",
     "普通本深入":"normal2",
@@ -41,11 +41,11 @@ def fight_enter():
         root.after(1000, root.destroy)
         print(fight_target)
         if fight_target is None:
-            core.sub_enter.sub_enter()
+            stages.sub_enter.sub_enter()
         elif fight_target == "mine":
-            core.mine_process.mine_process()
+            stages.mine_process.mine_process()
         else:
-            core.fight_process.fight_process(fight_target)
+            stages.fight_process.fight_process(fight_target)
 
 
     button = tk.Button(root,text="开始",padx=20,pady=20,command=lambda: start_fight())
