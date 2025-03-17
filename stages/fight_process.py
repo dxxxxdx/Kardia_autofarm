@@ -7,6 +7,7 @@ import core.gui_tools as gt
 import stages.main_enter
 import queue
 import core.often_operate
+from core.op import fpth
 
 def fight_process(target_map):
     root = tk.Tk()
@@ -49,27 +50,27 @@ def fight_process(target_map):
 
 def fighting(target_map,bread,queuex):
     rp.operate("update","e")
-    if not rp.operate(target_map,"e"):
+    if not rp.operate(fpth(target_map),"e"):
         gt.show_message("公主请把脚本挂在副本里",join=True)
         return
     fight_times = 0
     while True:
-        rp.operate(target_map,"c",multi_click=2)
+        rp.operate(fpth(target_map),"c",multi_click=2)
         queuex.put(f"搜索中\n已刷{fight_times}次")
         time.sleep(1)
-        if rp.operate('accident_event',"e"):
+        if rp.operate(fpth('accident_event'),"e"):
             time.sleep(0.1)
-            rp.operate('confirm2',"c")
+            rp.operate(fpth('confirm2'),"c")
             time.sleep(0.8)
-            rp.operate('get_item',"c",try_times=3)
+            rp.operate(fpth('get_item'),"c",try_times=3)
             time.sleep(0.8)
             fight_times += 1
             continue
         time.sleep(0.1)
-        if rp.operate('no_stamina',"e"):
+        if rp.operate(fpth('no_stamina'),"e"):
             if bread[0] == 1 :
                 queuex.put('来口面包')
-                rp.operate("confirm","c")
+                rp.operate(fpth("confirm"),"c")
                 time.sleep(0.8)
                 a = core.often_operate.eat_bread()
                 if not a :
@@ -78,21 +79,21 @@ def fighting(target_map,bread,queuex):
                 gt.show_message("你没有面包还没体力\n真心刷不动")
                 return
         time.sleep(0.5)
-        if rp.operate('ap',"e"):
+        if rp.operate(fpth('ap'),"e"):
             queuex.put(f"打着呢\n已刷{fight_times}次")
             time.sleep(0.8)
-            rp.operate('fight_confirm',"c",multi_click=3)
+            rp.operate(fpth('fight_confirm'),"c",multi_click=3)
             while True:
                 time.sleep(0.5)
-                if rp.operate('winning',"e"):
-                    rp.operate('winning',"c",multi_click=2)
+                if rp.operate(fpth('winning'),"e"):
+                    rp.operate(fpth('winning'),"c",multi_click=2)
                     time.sleep(0.8)
-                    rp.operate('get_item',"c")
+                    rp.operate(fpth('get_item'),"c")
                     time.sleep(2.8)
                     fight_times += 1
                     break
                 time.sleep(0.5)
-                if rp.operate('escape', "e"):
+                if rp.operate(fpth('escape'), "e"):
                     gt.show_message("你怎么跑了？？")
                     break
 

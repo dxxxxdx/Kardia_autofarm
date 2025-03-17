@@ -11,6 +11,7 @@ import core.gui_tools as gt
 import stages.main_enter
 import queue
 import core.often_operate
+from core.op  import fpth
 
 
 
@@ -97,18 +98,18 @@ def mine_process():
     root.mainloop()
 
 def fighting(target_map, bread, queuex):
-    if not rp.operate(target_map, "e"):
+    if not rp.operate(fpth(target_map), "e"):
         gt.show_message("公主请把脚本挂在副本里", join=True)
         return
     while True:
-        rp.operate(target_map, "c", multi_click=2, try_times=5)
+        rp.operate(fpth(target_map), "c", multi_click=2, try_times=5)
         #还没写完
         queuex.put("搜索中")
         time.sleep(1)
-        if rp.operate('no_stamina' , "e"):
+        if rp.operate(fpth('no_stamina') , "e"):
             if bread[0] == 1:
                 queuex.put('来口面包')
-                rp.operate("confirm", "c")
+                rp.operate(fpth("confirm"), "c")
                 time.sleep(0.7 )
                 a = core.often_operate.eat_bread()
                 if not a:
@@ -117,36 +118,36 @@ def fighting(target_map, bread, queuex):
                 gt.show_message("你没有面包还没体力\n真心刷不动")
                 return
         time.sleep(0.5)
-        if rp.operate('ap', "e"):
+        if rp.operate(fpth('ap'), "e"):
             queuex.put("打着呢")
             time.sleep(0.8)
             while True:
                 time.sleep(0.5)
-                if rp.operate('winning', "e"):
-                    rp.operate('winning', "c", multi_click=2)
+                if rp.operate(fpth('winning'), "e"):
+                    rp.operate(fpth('winning'), "c", multi_click=2)
                     time.sleep(0.8)
-                    rp.operate('get_item', "c")
+                    rp.operate(fpth('get_item'), "c")
                     time.sleep(2.8)
                     break
                 time.sleep(0.5)
-                if rp.operate('escape', "e"):
+                if rp.operate(fpth('escape'), "e"):
                     gt.show_message("你怎么跑了？？")
                     break
 
 
 def mining (gem_type, bread, queuex):
-    if not rp.operate("mine_feature", "e",try_times= 6):
+    if not rp.operate(fpth("mine_feature"), "e",try_times= 6):
         gt.show_message("公主请把脚本挂在矿洞里", join=True)
         return
     while True:
-        while not rp.operate(gem_type, "e", multi_click=2, try_times=2):
+        while not rp.operate(fpth(gem_type), "e", multi_click=2, try_times=2):
             scroll_level = 0
             queuex.put("搜索中")
             time.sleep(1)
-            if rp.operate('mine_buttom', "e"):
+            if rp.operate(fpth('mine_buttom'), "e"):
                 scroll_level = 1
                 time.sleep(0.8)
-            if rp.operate('mine_top', "e"):
+            if rp.operate(fpth('mine_top'), "e"):
                 scroll_level = 0
                 time.sleep(0.8)
             if scroll_level == 0:
@@ -155,7 +156,7 @@ def mining (gem_type, bread, queuex):
                 pya.scroll(clicks=-3)
             else:
                 pya.scroll(clicks=random_integers(low = -5,high= 5))
-        rp.operate(gem_type, "e", multi_click=2, try_times=2)
+        rp.operate(fpth(gem_type), "e", multi_click=2, try_times=2)
         
 
 

@@ -142,7 +142,7 @@ class ImgResult :
     uuid = ""
 
 
-def operate (pathx,operation,single_find=True,try_times =1,
+def operate(pathx,operation,single_find=True,try_times =1,
              multi_click=1,ingray=True,return_centers=False,
              threshold=0.8):
 

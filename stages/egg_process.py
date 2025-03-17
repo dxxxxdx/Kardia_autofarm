@@ -6,6 +6,7 @@ import queue
 import core.gui_tools as gt
 import keyboard
 import stages.main_enter
+from core.op import fpth
 
 def egg_process():
     root = tk.Tk()
@@ -43,9 +44,9 @@ def egging(queuex):
             stopflag = 1
     keyboard.on_press(stop)
     # 初始化移动到孵蛋房间
-    while not rp.operate("eggroom_feature","e"):
+    while not rp.operate(fpth("eggroom_feature"),"e"):
         if stopflag:break
-        rp.operate("eggroom_enter","c")
+        rp.operate(fpth("eggroom_enter"),"c")
         time.sleep(1)
     i = 0
     while True :
@@ -53,17 +54,17 @@ def egging(queuex):
         if stopflag:break
         i += 1
         queuex.put(f"正在运行，时间已过{i}秒")
-        if  rp.operate("egg_finish","e") or  rp.operate("egg_empty","e"):
+        if  rp.operate(fpth("egg_finish"),"e") or  rp.operate(fpth("egg_empty"),"e"):
             queuex.put("孵好了开拐")
-            rp.operate("sell","c")
+            rp.operate(fpth("sell"),"c")
             time.sleep(1)
-            rp.operate("confirm","c")
+            rp.operate(fpth("confirm"),"c")
             time.sleep(1)
-            rp.operate("fill","c")
+            rp.operate(fpth("fill"),"c")
             time.sleep(1)
-            rp.operate("sort_by_class","c")
+            rp.operate(fpth("sort_by_class"),"c")
             time.sleep(1)
-            rp.operate("egg1","c")
+            rp.operate(fpth("egg1"),"c")
             time.sleep(1)
         else:
             pass

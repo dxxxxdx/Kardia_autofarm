@@ -6,9 +6,6 @@ from selarm_recongnize import *
 import keyboard
 import core.recongnize_process as rp
 
-# 设置日志记录
-#logging.basicConfig(level=#logging.DEBUG, format='[%(levelname)s] %(message)s')
-
 class BoardGird:
     def __init__(self,gird_num):
         self.girdx = 0
@@ -19,30 +16,27 @@ class BoardGird:
         #logging.debug(f"Setting grid number: {gird_num}")
         self.gird_num = gird_num
 
-    def __repr__(self):
-        return f"BoardGird(x={self.girdx}, y={self.girdy}, num={self.gird_num})"
-
 class SlimeRecongnizeResult:
     def __init__(self, windows_pos, num):
         self.windows_pos = windows_pos
         self.num = num
 
-    def __repr__(self):
-        return f"SlimeRecongnizeResult(pos={self.windows_pos}, num={self.num})"
-
-
 # noinspection DuplicatedCode,PyMethodMayBeStatic
 class Game2048Board:
+    #类变量
+    slime_martix = []
+    board_center = []
+    gird_board = []
+
+
+
     def __init__(self):
         #logging.debug("Initializing Game2048Board...")
-        self.boardcenter = [1280, 720]
         #logging.debug(f"Board center initialized: {self.boardcenter}")
         self.slime_martix = [[BoardGird(-1) for _ in range(4)] for _ in range(4)]
 
+
     def print_board(self):
-        """
-        打印棋盘，先逆时针旋转 90°，然后将行顺序完全颠倒。
-        """
         #logging.debug("Printing board (Rotated 90° Counterclockwise + Inverted Rows)...")
         board_state = [[cell.gird_num for cell in row] for row in self.slime_martix]
         rotated = list(zip(*board_state))[::-1]  # 转置并翻转行顺序
@@ -136,21 +130,10 @@ class Game2048Board:
         return temp_matrix
 
     def print_simulated_board(self, move):
-        """
-        模拟执行指定的操作后，打印经过旋转和翻转的棋盘。
-        """
-        ##logging.debug(f"Simulating and printing board after move: {move}")
-
-        # 模拟棋盘移动
         temp_matrix = self.simulate_move(move)
-
         # 先逆时针旋转90°
         rotated = list(zip(*temp_matrix))[::-1]  # 转置并反转行顺序
-
-        # 再进行行翻转以匹配实际显示方式
         adjusted = [list(row) for row in reversed(rotated)]
-
-        # 打印调整后的棋盘
         print(f"\n=== Simulated Board After Move: {move} ===")
         for row in adjusted:
             print(row)
@@ -179,7 +162,6 @@ class Game2048Board:
         if ignore_area:
             print(ignore_area)
 
-
         for slime in slime_list:
             temp = find_img_or(slime)
             #logging.debug(f"Recognized positions for {slime}: {temp}")
@@ -190,7 +172,7 @@ class Game2048Board:
                     if distance > 160:
                         recongnize_res.append(SlimeRecongnizeResult(i, get_num_by_slime_path(slime)))
                     else:
-                        print(i,"wwwwwwwwwww")
+                        pass
 
         # Process grid boundaries
         minx, miny, maxx, maxy = float('inf'), float('inf'), float('-inf'), float('-inf')
@@ -202,6 +184,9 @@ class Game2048Board:
                     maxx = max(maxx, k[0])
                     maxy = max(maxy, k[1])
         ##logging.debug(f"Grid boundaries determined: minx={minx}, miny={miny}, maxx={maxx}, maxy={maxy}")
+        self.gird_board = [minx, miny, maxx, maxy]
+        self.set_center(self.gird_board)
+        print(self.board_center)
 
         # Update game state
         for i in recongnize_res:
@@ -229,6 +214,10 @@ class Game2048Board:
         for i in self.slime_martix :
             for j in i:
                 j.gird_num = -1
+
+    def set_center(self,gird_board):
+        self.gird_board = gird_board
+        self.board_center = [gird_board[2]-gird_board[0], gird_board[3]-gird_board[1]]
 
 
 
@@ -266,7 +255,7 @@ if __name__ == '__main__':
         game.print_board()
         print(game.find_best_move())
         print("___________________________")
-        board_center = game.boardcenter
+        board_center = game.board_center
 
 
     def test(event):
