@@ -6,7 +6,9 @@ import queue
 import core.gui_tools as gt
 import keyboard
 import stages.main_enter
+from core import op
 from core.op import fpth
+from stages.stage import Stage
 
 def egg_process():
     root = tk.Tk()
@@ -30,7 +32,7 @@ def egg_process():
         stages.main_enter.main_enter()
     root.after(100,start)
     root.after(100, lambda:gt.label_updater(root,labelx,egg_queue))
-    root.after(100, lambda: gt.test_th(root, eggt,back))
+    root.after(100, lambda:gt.test_th(root, eggt,back))
     root.mainloop()
 
 
@@ -70,7 +72,17 @@ def egging(queuex):
             pass
 
 
-
+def egging_cycle():
+    egg_cycle = Stage([
+        rp.ImgOperation(op.fpth("egg_finish"),"e"),
+        rp.ImgOperation(op.fpth("egg_empty"),"e"),
+        rp.ImgOperation(op.fpth("sell"),"e"),
+        rp.ImgOperation(op.fpth("confirm"),"e"),
+        rp.ImgOperation(op.fpth("fill"),"e"),
+        rp.ImgOperation(op.fpth("sort_by_class"),"e"),
+        rp.ImgOperation(op.fpth("egg1"),"e"),
+    ])
+    egg_cycle.operate()
 
 
 

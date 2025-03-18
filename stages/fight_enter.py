@@ -11,6 +11,7 @@ fight_dic = {
     "地区威胁":"weekend",
     "冥界boss":"7map_side1_boss",
     "雨林boss":"8map_side1_boss",
+    "踏青活动":"spring_act"
 }
 fight_dic_inv = {
     "normal3": "普通本完全",
@@ -19,7 +20,8 @@ fight_dic_inv = {
     "mine": "矿洞",
     "weekend": "地区威胁",
     "7map_side1_boss": "冥界boss",
-    "8map_side1_boss": "雨林boss"
+    "8map_side1_boss": "雨林boss",
+    "spring_act": "踏青活动"
 }
 
 def fight_enter():

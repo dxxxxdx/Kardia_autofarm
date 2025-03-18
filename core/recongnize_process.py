@@ -110,7 +110,7 @@ def update_scr():
 
 class ImgOperation :
     #识别类，将目标打包送给识别进程
-    def __init__(self, pathx , operation, single_find=True, try_times=1, multi_click=1,ingray=True,threshold=0.8):
+    def __init__(self, pathx , operation, single_find=True, try_times=1, multi_click=1,ingray=True,threshold=0.8,return_center=False):
         self.pathx = pathx
         self.operation = operation
         self.single_find = single_find
@@ -119,6 +119,8 @@ class ImgOperation :
         self.multi_click = multi_click
         self.ingray = ingray
         self.threshold = threshold
+        self.return_center = return_center
+    #基本操作内容
     pathx = ""
     operation = ""
     single_find = True
@@ -127,6 +129,44 @@ class ImgOperation :
     multi_click = 0
     ingray = True
     threshold = 0.8
+    return_center = False
+    #作为操作对象的特性（用于cycle）
+    cut_when_is_none = False
+    cut_when_is_not_none = False
+    continue_when_is_none = False
+    continue_when_is_not_none = False
+
+
+    def operate(self):
+        starttime = time.time()
+        global global_queue
+        img_input, img_output = global_queue
+        img_input.put(self)
+        res = ImgResult
+        while True:
+            try:
+                res = img_output.get()
+                if res.uuid != self.uuid:
+                    img_output.put(res)
+                    continue
+                break
+            except queue.Empty:
+                continue
+        endtime = time.time()
+        print(f"op消耗{endtime - starttime:.2f}")
+        if self.return_center:
+            if self.cut_when_is_none and res.times == 0:
+                return "CUTTING"
+            elif self.cut_when_is_not_none and res.times > 0:
+                return "CUTTING"
+            return res.centers
+        else:
+            if self.cut_when_is_none and res.times == 0:
+                return "CUTTING"
+            elif self.cut_when_is_not_none and res.times > 0:
+                return "CUTTING"
+            return int(res.times)
+
 
 
 
@@ -143,14 +183,13 @@ class ImgResult :
 
 
 def operate(pathx,operation,single_find=True,try_times =1,
-             multi_click=1,ingray=True,return_centers=False,
+             multi_click=1,ingray=True,return_center=False,
              threshold=0.8):
 
     #最常用的识别，任务多时可能会被阻塞
-
     starttime = time.time()
     img = ImgOperation(pathx,operation= operation,single_find= single_find
-                       ,try_times= try_times,multi_click=multi_click,ingray=ingray,threshold=threshold)
+                       ,try_times= try_times,multi_click=multi_click,ingray=ingray,threshold=threshold,return_center=return_center)
     uuidx = img.uuid
     global global_queue
     img_input, img_output = global_queue
@@ -167,7 +206,7 @@ def operate(pathx,operation,single_find=True,try_times =1,
             continue
     endtime = time.time()
     print(f"op消耗{endtime-starttime:.2f}")
-    if return_centers :
+    if return_center :
         return res.centers
     else:
         return int(res.times)
